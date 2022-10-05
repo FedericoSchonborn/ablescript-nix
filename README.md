@@ -57,3 +57,12 @@ let
 in
 { ... }
 ```
+
+## Binary cache
+
+A binary cache is available at [`ablescript`](https://app.cachix.org/cache/ablescript).
+
+```sh
+$ cachix use ablescript
+Configured https://ablescript.cachix.org binary cache in .../nix/nix.conf
+```

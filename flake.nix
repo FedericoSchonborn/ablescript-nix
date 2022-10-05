@@ -7,6 +7,7 @@
       flake = false;
     };
   };
+
   outputs = {
     nixpkgs,
     flake-utils,
@@ -19,10 +20,14 @@
         ablescript = pkgs.callPackage ./packages/ablescript.nix {};
         default = ablescript;
       };
+
       overlays = rec {
-        ablescript = final: prev: {ablescript = packages.${prev.system}.ablescript;};
+        ablescript = final: prev: {
+          ablescript = packages.${prev.system}.ablescript;
+        };
         default = ablescript;
       };
+
       formatter = pkgs.alejandra;
     });
 }

@@ -24,6 +24,7 @@
         };
 
         ablescript-unstable = pkgs.callPackage ./packages/ablescript.nix {
+          stable = false;
           version = "unstable-2022-09-20";
           commit = "8ef7118dc1270386d5455e4d407a272a0c7b0724";
           sha256 = "5UVuyTEKFpq7DcTn7HHNBOv874MvNwH83CWjtMFXBgA=";

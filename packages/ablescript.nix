@@ -3,6 +3,7 @@
   rustPlatform,
   fetchurl,
   version,
+  stable ? true,
   commit ? "",
   sha256 ? lib.fakeSha256,
   cargoSha256 ? lib.fakeSha256,
@@ -14,7 +15,7 @@ rustPlatform.buildRustPackage rec {
 
   src = fetchurl {
     url =
-      if commit == ""
+      if stable
       then "https://git.ablecorp.us/AbleScript/able-script/archive/v${version}.tar.gz"
       else "https://git.ablecorp.us/AbleScript/able-script/archive/${commit}.tar.gz";
     inherit sha256;

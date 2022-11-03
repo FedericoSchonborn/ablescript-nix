@@ -62,32 +62,38 @@
         ablescript0_5_2 = pkgs.callPackage ./packages/ablescript.nix {
           version = "0.5.2";
           src = ablescript0_5_2-src;
+          cargoSha256 = "2tBb8FdXknTbgFrjfO5ZM3O9OAnVuLVY/YcL8y/W7nA=";
         };
 
         ablescript0_5 = pkgs.callPackage ./packages/ablescript.nix {
           version = "0.5.0";
           src = ablescript0_5-src;
+          cargoSha256 = "Sua2KUv+ucq+80ypOw+T/TkC5waoSTxjxEJtHR4nxX0=";
         };
 
         ablescript0_4 = pkgs.callPackage ./packages/ablescript.nix {
           version = "0.4.0";
           src = ablescript0_4-src;
+          cargoSha256 = "MBPiqTE6H4qbidtTnSIBtYoMHb6mOG9hW0/LBLJ+N3M=";
         };
 
         ablescript0_3 = pkgs.callPackage ./packages/ablescript.nix {
           version = "0.3.0";
           src = ablescript0_3-src;
+          cargoSha256 = "/M7VuFhvR34QNo5a1lcwuYXm8QDQG0eYkoPYaLpWkZQ=";
         };
 
         ablescript0_2 = pkgs.callPackage ./packages/ablescript.nix {
           version = "0.2.0";
           src = ablescript0_2-src;
+          cargoSha256 = "Q+uR+0H/YruwWVfd/nMwicsfes7hVFrRVpmZuBd2gS4=";
         };
 
         ablescript-unstable = pkgs.callPackage ./packages/ablescript.nix {
           stable = false;
           version = "unstable-2022-09-20";
           src = ablescript-unstable-src;
+          cargoSha256 = "wa1D+C3d+pFhUo8wexCbfv5A/O3QyXaE6xBRH/JclWg=";
         };
 
         ablescript = ablescript0_5_2;

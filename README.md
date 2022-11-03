@@ -1,5 +1,7 @@
 # AbleScript for Nix
 
+[![Cachix](https://github.com/FedericoSchonborn/nix-ablescript/actions/workflows/cachix.yaml/badge.svg)](https://github.com/FedericoSchonborn/nix-ablescript/actions/workflows/cachix.yaml)
+
 Nix Flake for AbleScript.
 
 ## Usage

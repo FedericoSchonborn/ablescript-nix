@@ -101,12 +101,18 @@
       };
 
       overlays = rec {
-        ablescript = final: prev: {
-          ablescript = packages.${prev.system}.ablescript;
-          ablescript-unstable = packages.${prev.system}.ablescript-unstable;
+        ablescript = self: super: {
+          ablescript = packages.${super.system}.ablescript;
+          ablescript-unstable = packages.${super.system}.ablescript-unstable;
         };
 
         default = ablescript;
+      };
+
+      devShells.default = pkgs.mkShell {
+        nativeBuildInputs = with pkgs; [
+          just
+        ];
       };
 
       formatter = pkgs.alejandra;

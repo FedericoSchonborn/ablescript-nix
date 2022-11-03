@@ -2,8 +2,44 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+
     flake-compat = {
       url = "github:edolstra/flake-compat";
+      flake = false;
+    };
+
+    ablescript0_5_2-src = {
+      # v0.5.2
+      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=daca854db4b8fa61f49212a1735e7ffc2d228850";
+      flake = false;
+    };
+
+    ablescript0_5-src = {
+      # v0.5.0
+      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=70d6bf661fa89524c72a3ad8ca8027bf9c34000c";
+      flake = false;
+    };
+
+    ablescript0_4-src = {
+      # v0.4.0
+      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=cda63c733cb5daff66b596f27ec5765aab227d35";
+      flake = false;
+    };
+
+    ablescript0_3-src = {
+      # v0.3.0
+      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=a4e3b98c6a89839557fbbf85d83626c99bb5b126";
+      flake = false;
+    };
+
+    ablescript0_2-src = {
+      # v0.2.0
+      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=5293cd960773f179b0f1cf314aaa993288ebcf23";
+      flake = false;
+    };
+
+    ablescript-unstable-src = {
+      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=8ef7118dc1270386d5455e4d407a272a0c7b0724";
       flake = false;
     };
   };
@@ -11,26 +47,50 @@
   outputs = {
     nixpkgs,
     flake-utils,
+    ablescript0_5_2-src,
+    ablescript0_5-src,
+    ablescript0_4-src,
+    ablescript0_3-src,
+    ablescript0_2-src,
+    ablescript-unstable-src,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {inherit system;};
     in rec {
       packages = rec {
-        ablescript = pkgs.callPackage ./packages/ablescript.nix {
+        ablescript0_5_2 = pkgs.callPackage ./packages/ablescript.nix {
           version = "0.5.2";
-          sha256 = "wFmg9BTo2+JSVabWDIQAoLdT7OYuMxLxlvq6yL8g4EM=";
-          cargoSha256 = "2tBb8FdXknTbgFrjfO5ZM3O9OAnVuLVY/YcL8y/W7nA=";
+          src = ablescript0_5_2-src;
+        };
+
+        ablescript0_5 = pkgs.callPackage ./packages/ablescript.nix {
+          version = "0.5.0";
+          src = ablescript0_5-src;
+        };
+
+        ablescript0_4 = pkgs.callPackage ./packages/ablescript.nix {
+          version = "0.4.0";
+          src = ablescript0_4-src;
+        };
+
+        ablescript0_3 = pkgs.callPackage ./packages/ablescript.nix {
+          version = "0.3.0";
+          src = ablescript0_3-src;
+        };
+
+        ablescript0_2 = pkgs.callPackage ./packages/ablescript.nix {
+          version = "0.2.0";
+          src = ablescript0_2-src;
         };
 
         ablescript-unstable = pkgs.callPackage ./packages/ablescript.nix {
           stable = false;
           version = "unstable-2022-09-20";
-          commit = "8ef7118dc1270386d5455e4d407a272a0c7b0724";
-          sha256 = "5UVuyTEKFpq7DcTn7HHNBOv874MvNwH83CWjtMFXBgA=";
-          cargoSha256 = "wa1D+C3d+pFhUo8wexCbfv5A/O3QyXaE6xBRH/JclWg=";
+          src = ablescript-unstable-src;
         };
 
+        ablescript = ablescript0_5_2;
         default = ablescript;
       };
 

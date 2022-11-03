@@ -1,4 +1,4 @@
-packages := "ablescript ablescript-unstable"
+packages := "ablescript0_5_2 ablescript0_5 ablescript0_4 ablescript0_3 ablescript0_2 ablescript-unstable"
 
 @_default:
     just --list

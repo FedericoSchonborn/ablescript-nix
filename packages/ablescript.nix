@@ -3,25 +3,15 @@
   rustPlatform,
   fetchurl,
   version,
-  stable ? true,
-  commit ? "",
+  src,
   sha256 ? lib.fakeSha256,
   cargoSha256 ? lib.fakeSha256,
   ...
 }:
 rustPlatform.buildRustPackage rec {
+  inherit version src cargoSha256;
+
   pname = "ablescript";
-  inherit version;
-
-  src = fetchurl {
-    url =
-      if stable
-      then "https://git.ablecorp.us/AbleScript/able-script/archive/v${version}.tar.gz"
-      else "https://git.ablecorp.us/AbleScript/able-script/archive/${commit}.tar.gz";
-    inherit sha256;
-  };
-  inherit cargoSha256;
-
   meta = with lib; {
     description = "A programming language designed to be bad";
     homepage = "https://git.ablecorp.us/AbleScript/able-script";

@@ -1,2 +1,5 @@
 # Build output directories
 result*
+
+# Direnv
+.direnv

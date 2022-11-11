@@ -1,15 +1,28 @@
 {
   lib,
   rustPlatform,
-  fetchurl,
+  fetchFromGitea,
+  stable ? true,
   version ? null,
-  src ? null,
+  rev ? null,
+  sha256 ? lib.fakeSha256,
   cargoSha256 ? lib.fakeSha256,
   ...
 }:
 rustPlatform.buildRustPackage {
   pname = "ablescript";
-  inherit version src cargoSha256;
+  inherit version cargoSha256;
+
+  src = fetchFromGitea {
+    domain = "git.ablecorp.us";
+    owner = "AbleScript";
+    repo = "ablescript";
+    rev =
+      if stable
+      then "v" + version
+      else rev;
+    inherit sha256;
+  };
 
   meta = with lib; {
     description = "A programming language designed to be bad";

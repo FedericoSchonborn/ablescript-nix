@@ -1,41 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
-    ablescript0_5_2-src = {
-      # v0.5.2
-      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=daca854db4b8fa61f49212a1735e7ffc2d228850";
-      flake = false;
-    };
-
-    ablescript0_5-src = {
-      # v0.5.0
-      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=70d6bf661fa89524c72a3ad8ca8027bf9c34000c";
-      flake = false;
-    };
-
-    ablescript0_4-src = {
-      # v0.4.0
-      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=cda63c733cb5daff66b596f27ec5765aab227d35";
-      flake = false;
-    };
-
-    ablescript0_3-src = {
-      # v0.3.0
-      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=a4e3b98c6a89839557fbbf85d83626c99bb5b126";
-      flake = false;
-    };
-
-    ablescript0_2-src = {
-      # v0.2.0
-      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=5293cd960773f179b0f1cf314aaa993288ebcf23";
-      flake = false;
-    };
-
-    ablescript-unstable-src = {
-      url = "git+https://git.ablecorp.us/AbleScript/able-script?rev=8ef7118dc1270386d5455e4d407a272a0c7b0724";
-      flake = false;
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -43,57 +8,49 @@
     };
   };
 
-  outputs = {
-    nixpkgs,
-    ablescript0_5_2-src,
-    ablescript0_5-src,
-    ablescript0_4-src,
-    ablescript0_3-src,
-    ablescript0_2-src,
-    ablescript-unstable-src,
-    ...
-  }: let
+  outputs = {nixpkgs, ...}: let
     # TODO: macOS support?
     forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"];
   in rec {
     packages = forAllSystems (system: let
       pkgs = nixpkgs.legacyPackages.${system};
     in rec {
-      ablescript0_5_2 = pkgs.callPackage ./packages/ablescript.nix {
+      ablescript0_5_2 = pkgs.callPackage ./packages/ablescript {
         version = "0.5.2";
-        src = ablescript0_5_2-src;
+        sha256 = "3AvAqeZmH5foGS0blKbMdQbXgnAY6lNxNnYJhF9GAys=";
         cargoSha256 = "2tBb8FdXknTbgFrjfO5ZM3O9OAnVuLVY/YcL8y/W7nA=";
       };
 
-      ablescript0_5 = pkgs.callPackage ./packages/ablescript.nix {
+      ablescript0_5 = pkgs.callPackage ./packages/ablescript {
         version = "0.5.0";
-        src = ablescript0_5-src;
+        sha256 = "FVtyVO54YANMnAZyKyw9/8RvrrMwqQqyEKu/S4rSfs4=";
         cargoSha256 = "Sua2KUv+ucq+80ypOw+T/TkC5waoSTxjxEJtHR4nxX0=";
       };
 
-      ablescript0_4 = pkgs.callPackage ./packages/ablescript.nix {
+      ablescript0_4 = pkgs.callPackage ./packages/ablescript {
         version = "0.4.0";
-        src = ablescript0_4-src;
+        sha256 = "9RJ/CHdj+hQO9q/GMksvOo1YK1CLkDe8F3hRjb6sSDI=";
         cargoSha256 = "MBPiqTE6H4qbidtTnSIBtYoMHb6mOG9hW0/LBLJ+N3M=";
       };
 
-      ablescript0_3 = pkgs.callPackage ./packages/ablescript.nix {
+      ablescript0_3 = pkgs.callPackage ./packages/ablescript {
         version = "0.3.0";
-        src = ablescript0_3-src;
+        sha256 = "PfiGzsrzPzwRFQgJLJjt8fZyYpkqZuPK3z8B2fp78s4=";
         cargoSha256 = "/M7VuFhvR34QNo5a1lcwuYXm8QDQG0eYkoPYaLpWkZQ=";
       };
 
-      ablescript0_2 = pkgs.callPackage ./packages/ablescript.nix {
+      ablescript0_2 = pkgs.callPackage ./packages/ablescript {
         version = "0.2.0";
-        src = ablescript0_2-src;
+        sha256 = "oKVbvm8DzCbLDPYc8MnmT9/ECK5yq1CgC6/vMRxz1r0=";
         cargoSha256 = "Q+uR+0H/YruwWVfd/nMwicsfes7hVFrRVpmZuBd2gS4=";
       };
 
-      ablescript-unstable = pkgs.callPackage ./packages/ablescript.nix {
+      ablescript-unstable = pkgs.callPackage ./packages/ablescript {
         stable = false;
-        version = "unstable-2022-09-20";
-        src = ablescript-unstable-src;
-        cargoSha256 = "wa1D+C3d+pFhUo8wexCbfv5A/O3QyXaE6xBRH/JclWg=";
+        version = "unstable-2022-11-04";
+        rev = "1a9cf6c2a640fd0815ddfee63b737ecafa48e3c8";
+        sha256 = "L2KxlHRBPXMDywMqWVX7ua+d8ceeoDJnSfFJIbjGiRM=";
+        cargoSha256 = "172i2RW7CFT5t139hkdLZbsalp9mB+5udKDceXTHOqI=";
       };
 
       ablescript = ablescript0_5_2;

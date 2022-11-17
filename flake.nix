@@ -78,4 +78,13 @@
 
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
   };
+
+  nixConfig = {
+    extra-substituters = [
+      "https://ablescript.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "ablescript.cachix.org-1:ohFVmuceKGwQHeCRRxP8bZeaPX9c+Yl0wU+yHy7NM4M="
+    ];
+  };
 }

@@ -1,6 +1,16 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    nil = {
+      url = "github:oxalica/nil";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    alejandra = {
+      url = "github:kamadorueda/alejandra";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -8,13 +18,18 @@
     };
   };
 
-  outputs = {nixpkgs, ...}: let
-    # TODO: macOS support?
-    forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"];
-  in rec {
+  outputs = {
+    self,
+    nixpkgs,
+    nil,
+    alejandra,
+    ...
+  }: let
+    forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
+  in {
     packages = forAllSystems (system: let
       pkgs = nixpkgs.legacyPackages.${system};
-    in rec {
+    in {
       ablescript0_5_2 = pkgs.callPackage ./packages/ablescript {
         version = "0.5.2";
         sha256 = "3AvAqeZmH5foGS0blKbMdQbXgnAY6lNxNnYJhF9GAys=";
@@ -53,17 +68,17 @@
         cargoSha256 = "172i2RW7CFT5t139hkdLZbsalp9mB+5udKDceXTHOqI=";
       };
 
-      ablescript = ablescript0_5_2;
-      default = ablescript;
+      ablescript = self.packages.${system}.ablescript0_5_2;
+      default = self.packages.${system}.ablescript;
     });
 
-    overlays = rec {
-      ablescript = self: super: {
-        ablescript = packages.${super.system}.ablescript;
-        ablescript-unstable = packages.${super.system}.ablescript-unstable;
+    overlays = {
+      ablescript = _: super: {
+        ablescript = self.packages.${super.system}.ablescript;
+        ablescript-unstable = self.packages.${super.system}.ablescript-unstable;
       };
 
-      default = ablescript;
+      default = self.overlays.ablescript;
     };
 
     devShells = forAllSystems (system: let
@@ -71,20 +86,23 @@
     in {
       default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [
+          nil.packages.${system}.default
           just
         ];
       };
     });
 
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    formatter = forAllSystems (system: alejandra.packages.${system}.default);
   };
 
   nixConfig = {
     extra-substituters = [
-      "https://ablescript.cachix.org"
+      "https://ablescript.cachix.org/"
+      "https://alejandra.cachix.org/"
     ];
     extra-trusted-public-keys = [
       "ablescript.cachix.org-1:ohFVmuceKGwQHeCRRxP8bZeaPX9c+Yl0wU+yHy7NM4M="
+      "alejandra.cachix.org-1:NjZ8kI0mf4HCq8yPnBfiTurb96zp1TBWl8EC54Pzjm0="
     ];
   };
 }

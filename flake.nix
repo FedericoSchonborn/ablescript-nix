@@ -2,16 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    nil = {
-      url = "github:oxalica/nil";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    alejandra = {
-      url = "github:kamadorueda/alejandra";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -21,8 +11,6 @@
   outputs = {
     self,
     nixpkgs,
-    nil,
-    alejandra,
     ...
   }: let
     forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
@@ -85,24 +73,21 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in {
       default = pkgs.mkShell {
-        nativeBuildInputs = with pkgs; [
-          nil.packages.${system}.default
+        packages = with pkgs; [
           just
         ];
       };
     });
 
-    formatter = forAllSystems (system: alejandra.packages.${system}.default);
+    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
   };
 
   nixConfig = {
     extra-substituters = [
       "https://ablescript.cachix.org/"
-      "https://alejandra.cachix.org/"
     ];
     extra-trusted-public-keys = [
       "ablescript.cachix.org-1:ohFVmuceKGwQHeCRRxP8bZeaPX9c+Yl0wU+yHy7NM4M="
-      "alejandra.cachix.org-1:NjZ8kI0mf4HCq8yPnBfiTurb96zp1TBWl8EC54Pzjm0="
     ];
   };
 }

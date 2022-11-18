@@ -11,7 +11,7 @@
 }:
 rustPlatform.buildRustPackage {
   pname = "ablescript";
-  inherit version cargoSha256;
+  inherit version;
 
   src = fetchFromGitea {
     domain = "git.ablecorp.us";
@@ -23,6 +23,8 @@ rustPlatform.buildRustPackage {
       else rev;
     inherit sha256;
   };
+
+  inherit cargoSha256;
 
   meta = with lib; {
     description = "A programming language designed to be bad";

@@ -44,7 +44,7 @@ Hello, AbleScript!
 }
 ```
 
-### In a Nix derivation
+### Using `fetchTarball`
 
 ```nix
 { lib, fetchTarball, ... }:

@@ -7,6 +7,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    pre-commit-hooks = {
+        url = "github:cachix/pre-commit-hooks.nix";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -17,6 +22,7 @@
     self,
     nixpkgs,
     rust-overlay,
+    pre-commit-hooks,
     ...
   }: let
     forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
@@ -87,7 +93,18 @@
         packages = with pkgs; [
           just
         ];
+
+        inherit (self.checks.${system}.pre-commit-check) shellHook;
       };
+    });
+
+    checks = forAllSystems(system: {
+        pre-commit-check = pre-commit-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+            alejandra.enable = true;
+            };
+        };
     });
 
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);

@@ -35,7 +35,7 @@ jobs:
         run: nix flake archive --json --override-flake nixpkgs "github:NixOS/nixpkgs/${{ matrix.nixpkgs }}" | jq -r '.path,(.inputs | to_entries[].value.path)' | cachix push ablescript
 
   packages:
-    name: Push Packages (${{ matrix.os }}:${{ matrix.nixpkgs }})
+    name: Push Packages (${{ matrix.os }}/${{ matrix.arch }}:${{ matrix.nixpkgs }})
     runs-on: ${{ matrix.os }}
     needs:
       - inputs
@@ -44,6 +44,9 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
+        arch:
+          - x86_64
+          - aarch64
         nixpkgs:
           - nixos-22.05
           - nixos-unstable
@@ -63,6 +66,6 @@ jobs:
 
       - name: Push packages
         run: |
-          for package in $(nix flake show --json | jq -r '.packages."x86_64-linux" | to_entries[].key'); do
+          for package in $(nix flake show --json | jq -r '.packages."${{ matrix.arch }}-$(uname -s | tr "[[:upper:]]" "[[:lower:]]")" | to_entries[].key'); do
             nix build --print-build-logs --json ".#${package}" --override-flake nixpkgs "github:NixOS/nixpkgs/${{ matrix.nixpkgs }}" | jq -r '.[].outputs | to_entries[].value' | cachix push ablescript
           done

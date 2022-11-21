@@ -7,6 +7,7 @@
   rev ? null,
   sha256 ? lib.fakeSha256,
   cargoSha256 ? lib.fakeSha256,
+  rust-bin,
   ...
 }:
 rustPlatform.buildRustPackage {
@@ -25,6 +26,10 @@ rustPlatform.buildRustPackage {
   };
 
   inherit cargoSha256;
+
+  nativeBuildInputs = [
+    rust-bin.stable.latest.minimal
+  ];
 
   meta = with lib; {
     description = "A programming language designed to be bad";

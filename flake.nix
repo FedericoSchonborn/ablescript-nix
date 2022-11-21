@@ -8,8 +8,8 @@
     };
 
     pre-commit-hooks = {
-        url = "github:cachix/pre-commit-hooks.nix";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     flake-compat = {
@@ -98,13 +98,13 @@
       };
     });
 
-    checks = forAllSystems(system: {
-        pre-commit-check = pre-commit-hooks.lib.${system}.run {
-            src = ./.;
-            hooks = {
-            alejandra.enable = true;
-            };
+    checks = forAllSystems (system: {
+      pre-commit-check = pre-commit-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          alejandra.enable = true;
         };
+      };
     });
 
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
